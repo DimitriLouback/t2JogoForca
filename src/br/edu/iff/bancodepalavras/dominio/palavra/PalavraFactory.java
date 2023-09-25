@@ -1,5 +1,9 @@
 package br.edu.iff.bancodepalavras.dominio.palavra;
 
-public class PalavraFactory {
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+
+public interface PalavraFactory {
     
+    public Palavra getPalavra(String palavra, Tema tema);
+
 }

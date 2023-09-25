@@ -1,5 +1,7 @@
 package br.edu.iff.jogoforca.dominio.boneco;
 
-public class BonecoFactory {
-    
+public interface BonecoFactory {
+
+    public Boneco getBoneco();
+
 }

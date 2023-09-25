@@ -1,5 +1,7 @@
 package br.edu.iff.repository;
 
-public class Repository {
-    
+// LAYER SUPERTYPE
+public interface Repository 
+{
+	public long getProximoId();
 }
