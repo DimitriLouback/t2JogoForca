@@ -4,7 +4,7 @@ import br.edu.iff.repository.Repository;
 
 public abstract class EntityFactory {
     
-    private Repository repository;
+    private static Repository repository;
 
     protected EntityFactory(Repository repository) {
         if(repository == null) {
@@ -19,7 +19,7 @@ public abstract class EntityFactory {
 
     }
 
-    protected long getProximoId() {
+    protected static long getProximoId() {
         return repository.getProximoId();
     }
 }
