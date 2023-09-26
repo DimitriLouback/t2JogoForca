@@ -5,8 +5,10 @@ package br.edu.iff.bancodepalavras.dominio.palavra;
 import  br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import  br.edu.iff.repository.RepositoryException;
 
-public class PalavraAppService {
+public class PalavraAppService 
+{
 
+	//SOLE INSTANCE
 	private static PalavraAppService soleInstance;
 	TemaRepository temaRepository;
 	PalavraRepository palavraRepository;
@@ -26,6 +28,8 @@ public class PalavraAppService {
 		return soleInstance;
 	}
 
+	
+	//CONSTRUTOR
 	private PalavraAppService(TemaRepository temaRepository, PalavraRepository palavraRepository, PalavraFactory palavraFactory)
 	{
 		this.temaRepository = temaRepository;
@@ -33,6 +37,8 @@ public class PalavraAppService {
 		this.palavraFactory = palavraFactory;
 	}
 
+	
+	//MÉTODOS
 	public boolean novaPalavra(String palavra, long idTema)
 	{
 		if(temaRepository.getPorId(idTema) == null)

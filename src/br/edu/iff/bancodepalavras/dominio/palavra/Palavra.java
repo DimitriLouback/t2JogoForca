@@ -19,7 +19,7 @@ public class Palavra extends ObjetoDominioImpl
 	//ATRIBUTOS
 	private Letra[] letras;
 	private Letra letraEncoberta;
-	public static LetraFactoryImpl factory;
+	public static LetraFactory factory;
 	private Tema tema;
 	
 	
@@ -56,12 +56,12 @@ public class Palavra extends ObjetoDominioImpl
 	
 	
 	// FACTORY
-	public void setLetraFactory(LetraFactoryImpl factory)
+	public static void setLetraFactory(LetraFactory letraFactory)
 	{
-		this.factory = factory;
+		Palavra.factory = letraFactory;
 	}
 	
-	public static LetraFactoryImpl getLetraFactory() 
+	public static LetraFactory getLetraFactory() 
 	{
 		return Palavra.factory;
 	}
