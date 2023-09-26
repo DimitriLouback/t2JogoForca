@@ -1,4 +1,5 @@
 package br.edu.iff.bancodepalavras.dominio.palavra;
+//importações
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.letra.LetraFactory;
