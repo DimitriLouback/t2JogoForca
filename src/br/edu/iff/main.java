@@ -1,13 +1,9 @@
 package br.edu.iff;
 
-
+import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
-import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactoryImpl;
-import br.edu.iff.bancodepalavras.dominio.palavra.emmemoria.MemoriaPalavraRepository;
-import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaFactory;
-import br.edu.iff.bancodepalavras.dominio.tema.TemaFactoryImpl;
-import br.edu.iff.bancodepalavras.dominio.tema.emmemoria.MemoriaTemaRepository;
+import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import br.edu.iff.jogoforca.Aplicacao;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
 import br.edu.iff.jogoforca.dominio.rodada.Rodada;
@@ -16,126 +12,98 @@ import br.edu.iff.repository.RepositoryException;
 
 import java.util.Scanner;
 
-public class main {
-    public static void main(String[] args) throws RepositoryException {
-       
+public class Main {
+    static Scanner scanner = new Scanner(System.in);
+    static Aplicacao aplicacao = Aplicacao.getSoleInstance();
 
-    	
-    	Aplicacao aplicacao = Aplicacao.getSoleInstance();
+    public static void main(String[] args) {
         aplicacao.configurar();
-        inserirTemasEPalavras();
 
+        PalavraAppService palavraAppService = PalavraAppService.getSoleInstance();
 
+        TemaRepository temaRepository = aplicacao.getRepositoryFactory().getTemaRepository();
+        TemaFactory temaFactory = aplicacao.getTemaFactory();
 
-        Scanner scanner = new Scanner(System.in);
+        try {
+            temaRepository.inserir(temaFactory.getTema("Carro"));
+            temaRepository.inserir(temaFactory.getTema("Nome"));
+            temaRepository.inserir(temaFactory.getTema("Casa"));
+            temaRepository.inserir(temaFactory.getTema("Comida"));
+            temaRepository.inserir(temaFactory.getTema("Jogos"));
+        } catch (RepositoryException e) {
+            throw new RuntimeException(e);
+        }	
 
-        System.out.println("Informe seu nome: ");
-        String nomeJogador = scanner.nextLine();
-        System.out.println();
+        palavraAppService.novaPalavra("fusca", 1);
+        palavraAppService.novaPalavra("palio", 1);
+        palavraAppService.novaPalavra("corsa", 1);
+        palavraAppService.novaPalavra("felipe", 2);
+        palavraAppService.novaPalavra("ana", 2);
+        palavraAppService.novaPalavra("jorge", 2);
+        palavraAppService.novaPalavra("sofa", 3);
+        palavraAppService.novaPalavra("fogao", 3);
+        palavraAppService.novaPalavra("armario", 3);
+        palavraAppService.novaPalavra("fifa", 4);
+        palavraAppService.novaPalavra("mario", 4);
+        palavraAppService.novaPalavra("sonic", 4);
 
-        Jogador jogador = Aplicacao.getSoleInstance().getJogadorFactory().getJogador(nomeJogador);
-        Rodada rodada = RodadaAppService.getSoleInstance().novaRodada(jogador);
+        System.out.println("Digite seu nome: ");
+        String nomeJogador = scanner.next();
+
+        Jogador jogador = aplicacao.getJogadorFactory().getJogador(nomeJogador);
+        try {
+            aplicacao.getRepositoryFactory().getJogadorRepository().inserir(jogador);
+        } catch (RepositoryException e) {
+            throw new RuntimeException(e);
+        }
+
+        jogarRodada(jogador);
+    }
+
+    private static void jogarRodada(Jogador jogador) {
+        RodadaAppService rodadaAppService = RodadaAppService.getSoleInstance();
+
+        Rodada rodada = rodadaAppService.novaRodada(jogador);
+        System.out.println("Tema das palavras: " + rodada.getTema());
 
         do {
-            printStatus(rodada);
-
-            printOpcoes();
-            int option = Integer.parseInt(scanner.nextLine());
-
-            switch (option) {
-                case 1:
-                    System.out.println("Informe uma letra: ");
-                    char codigo = scanner.nextLine().charAt(0);
-                    System.out.println();
-
-                    rodada.tentar(codigo);
-                    break;
-                case 2:
-                    String[] palavras = new String[rodada.getNumPalavras()];
-                    for (int i = 0; i < rodada.getNumPalavras(); i++) {
-                        System.out.println("Informe a Palavra " + (i + 1) + ": ");
-                        palavras[i] = scanner.nextLine();
-                    }
-                    System.out.println();
-                    rodada.arriscar(palavras);
-                    break;
-                default:
-                    System.out.println("Opção Inválida");
+            System.out.println("Tentativas restantes: " + rodada.getQtdeTentativasRestantes());
+            System.out.println("Tentativas anteriores: ");
+            for (Letra tentativa : rodada.getTentativas()) {
+                tentativa.exibir(null);
+                System.out.print(" ");
             }
-        } while (!rodada.encerrou());
+            System.out.println();
 
-        printResultadoFinal(rodada);
-    }
-
-    private static void inserirTemasEPalavras() throws RepositoryException {
-        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("asd"));
-        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("esporte"));
-        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("casa"));
-        
-
-        
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("arroz", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));        
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("feijao", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));  
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("carne", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));  
-        
-        
-        /*
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("futebol", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));        
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("volei", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));  
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("basquete", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));
-        
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("quarto", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));        
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("banheiro", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));  
-        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("sala", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));
+            System.out.println("Palavras:");
+            rodada.exibirItens(null);
+            System.out.println();
+            System.out.println("Corpo: ");
+            rodada.exibirBoneco(null);
+            System.out.println();
 
 
-        /*
-        PalavraAppService palavraService = PalavraAppService.getSoleInstance();
+            System.out.println("(1) Tentar letra");
+            System.out.println("(2) Arriscar");
+            String escolha = scanner.next();
+            switch (escolha){
+                case "1":
+                    System.out.print("Digite a letra: ");
+                    rodada.tentar(scanner.next().charAt(0));
+                    break;
+                case "2":
+                    String[] palavrasArriscadas = new String[rodada.getNumPalavras()];
+                    for (int i = 0; i < palavrasArriscadas.length; i++) {
+                        System.out.print("Chute a palavra " + (i + 1)  + " :");
+                        palavrasArriscadas[i] = scanner.next();
+                    }
+                    rodada.arriscar(palavrasArriscadas);
+                    break;
+            }
 
-        palavraService.novaPalavra("arroz", 1L);
-        palavraService.novaPalavra("feijao", 1L);
-        palavraService.novaPalavra("carne", 1L);
+            if (rodada.descobriu()) System.out.println("Descobriu");
 
-        palavraService.novaPalavra("futebol", 2L);
-        palavraService.novaPalavra("volei", 2L);
-        palavraService.novaPalavra("basquete", 2L);
 
-        palavraService.novaPalavra("quarto", 3L);
-        palavraService.novaPalavra("banheiro", 3L);
-        palavraService.novaPalavra("sala", 3L);
-    }
-    
-    */
-    }
-    private static void printStatus(Rodada rodada) {
-        System.out.println("Tema: " + rodada.getTema().getNome());
-        System.out.println();
-
-        System.out.println("Palavras:");
-        rodada.exibirItens(null);
-        System.out.println();
-
-        System.out.println("Letras Erradas:");
-        rodada.exibirLetrasErradas(null);
-        System.out.println();
-
-        System.out.println("Boneco:");
-        rodada.exibirBoneco(null);
-        System.out.println();
-    }
-
-    private static void printOpcoes() {
-        System.out.println("[1] Tentar");
-        System.out.println("[2] Arriscar");
-    }
-
-    private static void printResultadoFinal(Rodada rodada) {
-        System.out.println("Resultado Final: " + (rodada.descobriu() ? "venceu" : "perdeu"));
-
-        System.out.println("Total Tentativas: " + rodada.getQtdeTentativas());
-        System.out.println("Tentativas Erradas: " + rodada.getQtdeErros());
-        System.out.println("Tentativas Certas: " + rodada.getQtdeTentativasRestantes());
-        System.out.println("Arriscou: " + (rodada.arriscou() ? "sim" : "não"));
-        System.out.println("Pontos: " + rodada.calcularPontos());
+        }while (!rodada.encerrou());
     }
 }

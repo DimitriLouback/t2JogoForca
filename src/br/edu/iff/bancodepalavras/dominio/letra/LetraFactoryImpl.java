@@ -1,5 +1,6 @@
 package br.edu.iff.bancodepalavras.dominio.letra;
 
+
 public abstract class LetraFactoryImpl implements LetraFactory {
 
     private Letra[] pool = new Letra[26];

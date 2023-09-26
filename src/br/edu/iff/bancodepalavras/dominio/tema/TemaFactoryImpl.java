@@ -1,5 +1,6 @@
 package br.edu.iff.bancodepalavras.dominio.tema;
 
+import br.edu.iff.bancodepalavras.dominio.tema.emmemoria.MemoriaTemaRepository;
 import br.edu.iff.factory.EntityFactory;
 import br.edu.iff.repository.RepositoryException;
 
@@ -35,7 +36,7 @@ public class TemaFactoryImpl extends EntityFactory implements TemaFactory {
     @Override
     public Tema getTema(String nome) {
         
-        return Tema.Criar(getProximoId(), nome);
+        return Tema.Criar(MemoriaTemaRepository.getSoleInstance().getProximoId(), nome);
     }
 
 }
