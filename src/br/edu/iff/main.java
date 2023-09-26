@@ -2,22 +2,30 @@ package br.edu.iff;
 
 
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactoryImpl;
+import br.edu.iff.bancodepalavras.dominio.palavra.emmemoria.MemoriaPalavraRepository;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaFactory;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaFactoryImpl;
+import br.edu.iff.bancodepalavras.dominio.tema.emmemoria.MemoriaTemaRepository;
 import br.edu.iff.jogoforca.Aplicacao;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
 import br.edu.iff.jogoforca.dominio.rodada.Rodada;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaAppService;
+import br.edu.iff.repository.RepositoryException;
 
 import java.util.Scanner;
 
 public class main {
-    public static void main(String[] args) {
-        Aplicacao aplicacao = Aplicacao.getSoleInstance();
-        aplicacao.configurar();
+    public static void main(String[] args) throws RepositoryException {
+       
 
+    	
+    	Aplicacao aplicacao = Aplicacao.getSoleInstance();
+        aplicacao.configurar();
         inserirTemasEPalavras();
+
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -59,12 +67,29 @@ public class main {
         printResultadoFinal(rodada);
     }
 
-    private static void inserirTemasEPalavras() {
-        TemaFactoryImpl.getSoleInstance().getTema("comida");
-        TemaFactoryImpl.getSoleInstance().getTema("esportes");
-        TemaFactoryImpl.getSoleInstance().getTema("casa");
+    private static void inserirTemasEPalavras() throws RepositoryException {
+        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("asd"));
+        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("esporte"));
+        MemoriaTemaRepository.getSoleInstance().inserir(TemaFactoryImpl.getSoleInstance().getTema("casa"));
         
 
+        
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("arroz", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));        
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("feijao", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));  
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("carne", MemoriaTemaRepository.getSoleInstance().getPorId(1) ));  
+        
+        
+        /*
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("futebol", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));        
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("volei", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));  
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("basquete", MemoriaTemaRepository.getSoleInstance().getPorId(2) ));
+        
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("quarto", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));        
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("banheiro", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));  
+        MemoriaPalavraRepository.getSoleInstance().inserir(PalavraFactoryImpl.getSoleInstance().getPalavra("sala", MemoriaTemaRepository.getSoleInstance().getPorId(3) ));
+
+
+        /*
         PalavraAppService palavraService = PalavraAppService.getSoleInstance();
 
         palavraService.novaPalavra("arroz", 1L);
@@ -79,7 +104,9 @@ public class main {
         palavraService.novaPalavra("banheiro", 3L);
         palavraService.novaPalavra("sala", 3L);
     }
-
+    
+    */
+    }
     private static void printStatus(Rodada rodada) {
         System.out.println("Tema: " + rodada.getTema().getNome());
         System.out.println();

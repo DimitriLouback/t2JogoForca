@@ -53,7 +53,7 @@ public class MemoriaTemaRepository implements TemaRepository
 				return temaBuscado;
 			}
 		}
-		throw new RuntimeException("nenhum tema encontrado o ID: " + id);
+		throw new RuntimeException("nenhum tema encontrado de ID: " + id);
 	}
 
 
