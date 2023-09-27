@@ -259,13 +259,18 @@ public class Rodada extends ObjetoDominioImpl
         if (this.descobriu())
         {
             pontos = 100;
-        }
+            for (Item item : itens)
+            {
+            	
+            	pontos += item.getLetrasEncobertas().length * 15;
+            	
+            }
+            
 
-        for (Item item : itens)
-        {
-            pontos += item.getLetrasDescobertas().length * 15;
         }
+        
 
+        
         return pontos;
     }
 

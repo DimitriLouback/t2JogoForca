@@ -28,15 +28,16 @@ public class MemoriaJogadorRepository implements JogadorRepository
 
     private List<Jogador> pool;
     
-    
-    
-    //MÉTODOS
-
+    //CONSTRUTOR
     private MemoriaJogadorRepository() 
     {
     	pool = new ArrayList<>(); 
     }
 
+    
+    //MÉTODOS
+
+   
     @Override
     public long getProximoId() 
     {
@@ -75,7 +76,7 @@ public class MemoriaJogadorRepository implements JogadorRepository
     @Override
     public void inserir( Jogador jogador) throws RepositoryException 
     {
-        if(pool.contains(jogador)) {
+        if(pool.contains(jogador))  { 
             throw new RepositoryException("Jogador já existe");
         }
         else {

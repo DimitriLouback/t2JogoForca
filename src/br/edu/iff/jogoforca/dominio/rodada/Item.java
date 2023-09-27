@@ -60,7 +60,7 @@ public class Item extends ObjetoDominioImpl
 	                listaLetras.add(palavra.getLetra(i));
 	            }
 	        }
-	        return   (Letra[]) listaLetras.toArray();
+	        return  listaLetras.toArray(new Letra[listaLetras.size()] );
 
 	 }
 	 
@@ -134,6 +134,7 @@ public class Item extends ObjetoDominioImpl
     }
 
     public boolean acertou(){
-        return palavraArriscada.equals(palavra.toString());
+    	
+        return palavra.toString().equals(palavraArriscada);
     }
 }

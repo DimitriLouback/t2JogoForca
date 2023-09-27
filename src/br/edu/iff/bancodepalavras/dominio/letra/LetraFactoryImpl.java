@@ -12,6 +12,11 @@ public abstract class LetraFactoryImpl implements LetraFactory {
 
     @Override
     public Letra getLetra(char codigo) {
+    	
+    	if((codigo < 'a' || codigo > 'z'))
+    	{
+    		throw new IllegalArgumentException();
+    	}
        Letra result = this.pool[codigo - 'a']; 
        if (result == null) {
             result = this.criarLetra(codigo);

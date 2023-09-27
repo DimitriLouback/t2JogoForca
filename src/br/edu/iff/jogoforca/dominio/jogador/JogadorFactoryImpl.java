@@ -31,12 +31,9 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory 
     @Override
     public Jogador getJogador(String nome) {
         Jogador jogador = Jogador.Criar(getProximoId(), nome);
-        try {
-            getJogadorRepository().inserir(jogador);
-        } catch ( RepositoryException e) {
-            throw new RuntimeException ("Ocorreu um erro ao tentar salvar o jogador");
+        
 
-        }
+        
 
         return jogador;
     }

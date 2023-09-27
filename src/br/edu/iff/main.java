@@ -10,6 +10,7 @@ import br.edu.iff.jogoforca.dominio.rodada.Rodada;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaAppService;
 import br.edu.iff.repository.RepositoryException;
 
+import java.awt.desktop.PrintFilesEvent;
 import java.util.Scanner;
 
 public class Main {
@@ -28,7 +29,6 @@ public class Main {
             temaRepository.inserir(temaFactory.getTema("Carro"));
             temaRepository.inserir(temaFactory.getTema("Nome"));
             temaRepository.inserir(temaFactory.getTema("Casa"));
-            temaRepository.inserir(temaFactory.getTema("Comida"));
             temaRepository.inserir(temaFactory.getTema("Jogos"));
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
@@ -37,20 +37,30 @@ public class Main {
         palavraAppService.novaPalavra("fusca", 1);
         palavraAppService.novaPalavra("palio", 1);
         palavraAppService.novaPalavra("corsa", 1);
+      //  palavraAppService.novaPalavra("fiat", 1);
+
         palavraAppService.novaPalavra("felipe", 2);
         palavraAppService.novaPalavra("ana", 2);
         palavraAppService.novaPalavra("jorge", 2);
+        //palavraAppService.novaPalavra("jose", 2);
+
+        
         palavraAppService.novaPalavra("sofa", 3);
         palavraAppService.novaPalavra("fogao", 3);
         palavraAppService.novaPalavra("armario", 3);
+        //palavraAppService.novaPalavra("cama", 3);
+
         palavraAppService.novaPalavra("fifa", 4);
         palavraAppService.novaPalavra("mario", 4);
         palavraAppService.novaPalavra("sonic", 4);
+        //palavraAppService.novaPalavra("pes", 4);
+
 
         System.out.println("Digite seu nome: ");
         String nomeJogador = scanner.next();
 
         Jogador jogador = aplicacao.getJogadorFactory().getJogador(nomeJogador);
+        System.out.println(jogador.getNome());
         try {
             aplicacao.getRepositoryFactory().getJogadorRepository().inserir(jogador);
         } catch (RepositoryException e) {
@@ -59,12 +69,12 @@ public class Main {
 
         jogarRodada(jogador);
     }
-
+    
     private static void jogarRodada(Jogador jogador) {
         RodadaAppService rodadaAppService = RodadaAppService.getSoleInstance();
 
         Rodada rodada = rodadaAppService.novaRodada(jogador);
-        System.out.println("Tema das palavras: " + rodada.getTema());
+        System.out.println("Tema das palavras: " + rodada.getTema().getNome());
 
         do {
             System.out.println("Tentativas restantes: " + rodada.getQtdeTentativasRestantes());
@@ -102,6 +112,7 @@ public class Main {
             }
 
             if (rodada.descobriu()) System.out.println("Descobriu");
+            System.out.println(rodada.calcularPontos());
 
 
         }while (!rodada.encerrou());
