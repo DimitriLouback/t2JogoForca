@@ -46,8 +46,7 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl
     public Rodada getRodada(Jogador jogador) {
     	
         Random rodadaAleatoria = new Random();
-        int quantidadePalavras = rodadaAleatoria.nextInt(2)+ 1;
-        System.out.println("teste p " + quantidadePalavras);
+        int quantidadePalavras = rodadaAleatoria.nextInt(3)+1;
         
         List<Tema> temas = getTemaRepository().getTodos();
         int posicao = rodadaAleatoria.nextInt(temas.size());
@@ -62,8 +61,7 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl
         {	
    
         	
-        	palavras.add(i, (Palavra) palavrasDoTema.toArray()[(rodadaAleatoria.nextInt(temas.size())+1)]);
-        	System.out.println("teste Z" + palavras.size());
+        	palavras.add(i, (Palavra) palavrasDoTema.toArray()[rodadaAleatoria.nextInt(temas.size() - 1)]);
         }
         
         
